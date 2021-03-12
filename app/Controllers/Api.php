@@ -57,6 +57,44 @@ class Api extends BaseController
 
 	}
 
+    
+    /*********************************************************************************************
+     
+     Dans delete , on gère la suppression d'un ou plusieurs contacts
+     delete adminstrates deleting one or more contacts
+     
+     **************************** **************************************************************** */
+    
+    public function delete() {
+        
+        /*********************************************************************************************
+         
+         1 je recupère identifiant du contact a supprimer
+         2 si il existe je passe au 3
+         3 je fais la requete pour supprimer
+         
+         4 j'informe l'etat de la suppression
+         **************************** **************************************************************** */
+        
+        $id = $this->request->getVar('id');
+        
+        $etatSuppression = ['response'=>'NOK'] ;
+        
+        if (!empty($id)) {
+            
+            $contact = $this->contactsModel->where('id',$id)->first();
+            
+            $this->contactsModel->where('id',$id)->delete();
+            
+            $etatSuppression = ['response'=>'OK'] ;
+            
+            return $this->response->setJSON($etatSuppression); 
+            
+        }
+        
+        return $this->response->setJSON($etatSuppression); 
+        
+    }
     /****************************************************************************************
      Dans edit , on gère l'ajout et la modification d'un contact
      edit administrates adding and editing a contact
@@ -64,45 +102,124 @@ class Api extends BaseController
     
     public function edit() {
 
-
-    }
-
-    /*********************************************************************************************
-     
-     Dans delete , on gère la suppression d'un ou plusieurs contacts
-     delete adminstrates deleting one or more contacts
-
-    **************************** **************************************************************** */
-
-    public function delete() {
-
-    /*********************************************************************************************
-     
-     1 je recupère identifiant du contact a supprimer
-     2 si il existe je passe au 3
-     3 je fais la requete pour supprimer
-    
-     4 j'informe l'etat de la suppression
-    **************************** **************************************************************** */
-
+        $etatAction = ['response'=>false] ;
+        
+        $rules = [
+            'id'        => 'required',
+            'last_Name' => 'required',
+            'phone'     => 'required'
+        ];
+        
+        if ($this->validate($rules)) {
+            
             $id = $this->request->getVar('id');
+    
+            $contact = $this->contactsModel->where('id',$id)->first();
+                    
+                if (!empty($contact)) {
 
-            $etatSuppression = ['response'=>'NOK'] ;
+                    $last_Name = $this->request->getVar('last_Name');
+                    
+                    $phone = $this->request->getVar('phone');
+                
+                    $dataSave = [
+                        'last_Name'     => $last_Name,
+                        'phone'    	    => $phone,
+                        'first_Name'    => $this->request->getVar('last_Name'),
+                        'email'         => $this->request->getVar('email')
 
-                if (!empty($id)) {
+                    ];
 
-                    $contact = $this->contactsModel->where('id',$id)->first();
+                    $this->contactsModel->where('id',$id)->set($dataSave)->update();
 
-                    $this->contactsModel->where('id',$id)->delete();
+                    $etatAction = ['response'=>true] ;
+                
+                }  else {
 
-                    $etatSuppression = ['response'=>'OK'] ;
+                    $etatAction["ERROR"]["ID"] = "Le contact/L'ID n'existe pas";
 
-                    return $this->response->setJSON($etatSuppression); 
+                }       
+    
+            } else {
+                
+                if (empty($this->request->getVar('last_Name'))) {
+
+                    $etatAction["ERROR"]["Nom"] = "Le nom n'a pas été rempli";
 
                 }
-            
-                return $this->response->setJSON($etatSuppression); 
+                
+                    if (empty($this->request->getVar('phone'))) {
 
+                        $etatAction["ERROR"]["Téléphone"] = "Le téléphone n'a pas été rempli";
+
+                    }
+
+            }
+
+        return $this->response->setJSON($etatAction);
+
+        //Test de rajout de first name & email, check en base, test de rajout
+        
+    }
+
+     /****************************************************************************************
+     Dans create , on gère l'ajout d'un contact
+      recup infos form post code igniter avec getVar de ces valeurs :
+     'Nom'(text),
+     'Prenom'(text),
+     'company',
+     Profession(text),
+     email(email),
+     NumTel(number),
+     Note(text),
+     Favoris(text),
+     Image(file)
+     return true si reussite et false si echec et pourquoi
+     Valeurs obligatoires : nom et num tel
+
+    **************************** ******************************************************** */
+
+    public function create() {
+
+        $etatAction = ['response'=>false] ;
+
+        $rules = [
+            'last_Name'        => 'required',
+            'phone'     => 'required'
+        ];
+         
+            if($this->validate($rules)) {
+                
+            $last_Name = $this->request->getVar('last_Name');
+            
+            $phone = $this->request->getVar('phone');
+
+            $dataSave = [
+                'last_Name'     => $last_Name,
+                'phone'    	    => $phone
+            ];
+
+            $this->contactsModel->save($dataSave);            
+
+            $etatAction = ['response'=>true] ;
+
+            } else {
+                
+                if (empty($this->request->getVar('last_Name'))) {
+
+                    $etatAction["ERROR"]["Nom"] = "Le nom n'a pas été rempli";
+
+                }
+                
+                    if (empty($this->request->getVar('phone'))) {
+
+                        $etatAction["ERROR"]["Téléphone"] = "Le téléphone n'a pas été rempli";
+
+                    }   
+
+            }
+
+        return $this->response->setJSON($etatAction); 
     }
 
     /**************************************************************************************************************
