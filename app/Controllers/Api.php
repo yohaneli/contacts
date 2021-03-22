@@ -51,9 +51,10 @@ class Api extends BaseController
 
                 }
 
-                return $this->response->setJSON($listContacts); 
-
             }
+
+            return $this->response->setJSON($listContacts); 
+
 
 	}
 

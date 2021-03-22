@@ -85,9 +85,19 @@ Les résultats de la recherche sont classés par ordre alphabétique du nom puis
 Elle fonctionne avec la methode POST et renvoie des réponses en JSON.
 
 
+	AJOUTER UN CONTACT
 
 
 
+Pour ajouter un contact, il faut un nom , un prénom , une photo , son entreprise, sa profession , son numéro de téléphone , son adresse mail .
+En plus de son id , et de sa date de création.
+
+
+
+
+		MODIFIER UN CONTACT
+
+Pour modifier un contact on a besoin en paramètre de l'id du contact
 
 
 
