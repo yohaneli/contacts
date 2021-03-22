@@ -77,6 +77,7 @@ $(document).ready(function () {
 
    // Favorite star click
    $(".app-page .favorite i").on("click", function (e) {
+      console.log("J'ai cliqué sur favoris");
       e.preventDefault();
       $(this).toggleClass("amber-text");
    });
