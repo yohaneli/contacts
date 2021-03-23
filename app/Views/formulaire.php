@@ -26,6 +26,19 @@ Prenom : <input type="text" name="prenom"></input>
 
 <br><br>
 
+Mail : <input type="text" name="mail"></input>
+
+<br><br>
+
+<?php if (isset($validation) && $validation->hasError('mail') && $request->getVar('monformulaire') =='true') { 
+    
+    echo $validation->getError('mail');
+    
+}?>
+
+<br><br>
+
+
 <button type="submit">Envoyer</button>
 
 </form>

@@ -76,12 +76,32 @@ $(document).ready(function () {
    }
 
    // Favorite star click
-   $(".app-page .favorite i").on("click", function (e) {
-      console.log("J'ai cliqué sur favoris");
+    $(".favorite i").on("click", function (e) {
+       //var test = e.target.id.split("-"); 1ère technique pour atteindre l'id
+       //console.log($(this).data('ref'));
+       //alert($(this).data('nom')+' a été ajouté à vos favoris');
+       var param={
+		   id:$(this).data('ref')
+		};
+       postToApi('favori',param);
+       e.preventDefault();
+       $(this).toggleClass("amber-text");
+    });
+
+    $(".delete i").on("click", function (e) {
+      //var test = e.target.id.split("-"); 1ère technique pour atteindre l'id
+      //console.log($(this).data('ref'));
+      //alert($(this).data('nom')+' a été ajouté à vos favoris');
+      var param={
+		   id:$(this).data('ref')
+		};
+       postToApi('delete',param);
+       $("#contact- " + "delete").remove();
+ //supprimer l'element correspondant à l'id dans la DOM
       e.preventDefault();
-      $(this).toggleClass("amber-text");
    });
 
+   
    // Toggle class of sidenav
    $("#contact-sidenav").sidenav({
       onOpenStart: function () {
@@ -217,4 +237,8 @@ resizetable();
 if ($(window).width() < 900) {
    $(".sidebar-left.sidebar-fixed").removeClass("animate fadeUp animation-fast");
    $(".sidebar-left.sidebar-fixed .sidebar").removeClass("animate fadeUp");
+}
+
+function favori(id) {
+   console.log(id);
 }

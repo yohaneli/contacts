@@ -151,11 +151,11 @@
               <th>Supprimer</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="listeContact">
 
             <?php foreach ($contacts as $contact) {?>
 
-            <tr>
+            <tr id="contact-"<?php echo $contact->id ;?>>
               <td class="center-align contact-checkbox">
                 <label class="checkbox-label">
                   <input type="checkbox" name="foo" />
@@ -167,8 +167,8 @@
               <td><?php echo $contact->last_Name." ".$contact->first_Name ; ?></td>
               <td><?php echo $contact->email ; ?></td>
               <td><?php echo $contact->phone ; ?></td>
-              <td><span class="favorite"><i class="material-icons"> star_border </i></span></td>
-              <td><span><i class="material-icons delete">delete_outline</i></span></td>
+              <td><span class="favorite"><i class="material-icons" data-ref="<?php echo $contact->id; ?>" data-nom="<?php echo $contact->last_Name; ?>" > star_border </i></span></td>
+              <td><span class="delete"><i class="material-icons" data-ref="<?php echo $contact->id; ?>" >delete_outline</i></span></td>
             </tr>
               
               <?php } ?>
@@ -197,23 +197,23 @@
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix"> perm_identity </i>
-            <input id="first_name" type="text" class="validate">
-            <label for="first_name">First Name</label>
+            <input id="#first_name" type="text" class="validate">
+            <label for="first_name">Prénom</label>
           </div>
           <div class="input-field col s12">
             <i class="material-icons prefix"> perm_identity </i>
             <input id="last_name" type="text" class="validate">
-            <label for="last_name">Last Name</label>
+            <label for="last_name">Nom</label>
           </div>
           <div class="input-field col s12">
             <i class="material-icons prefix"> business </i>
             <input id="company" type="text" class="validate">
-            <label for="company">Company</label>
+            <label for="company">Entreprise</label>
           </div>
           <div class="input-field col s12">
             <i class="material-icons prefix"> business_center </i>
             <input id="business" type="text" class="validate">
-            <label for="business">Job Title</label>
+            <label for="business">Profession</label>
           </div>
         </div>
         <div class="row">
@@ -225,7 +225,7 @@
           <div class="input-field col s12">
             <i class="material-icons prefix"> call </i>
             <input id="phone" type="text" class="validate">
-            <label for="phone">Phone</label>
+            <label for="phone">Numéro de téléphone</label>
           </div>
           <div class="input-field col s12">
             <i class="material-icons prefix"> note </i>
