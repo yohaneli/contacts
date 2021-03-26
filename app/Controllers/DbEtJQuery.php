@@ -12,19 +12,39 @@ class DbEtJQuery extends BaseController {
 
         $this->contactsModel = new ContactModel();
 
+        parent::__construct();
+
+		$this->client = \Config\Services::curlrequest();
+
     }
 
 public function index() {
 
-    $listeContacts = $this->contactsModel->orderBy('id','DESC')->paginate(10);
+    // $listeContacts = $this->contactsModel->orderBy('id','DESC')->paginate(10);
 
-    $data = ['listeContacts' => $listeContacts];
+    // $data = ['listeContacts' => $listeContacts];
 
-    echo view('common/header');
+    // echo view('common/header');
 
+    // echo view('dbjquery',$data);
+
+    // echo view('common/footer');
+
+    $listContacts = $this->client->request('POST', 'http://contacts/api', [
+        'form_params' => [
+                'paginate' => 5,
+                'type' => '',
+                'elements' => '',
+        ]
+    ]);
+
+    $contacts = json_decode($listContacts->getBody());
+
+    $data = ['contacts' => $contacts];
+
+    echo view('Common/Header');
     echo view('dbjquery',$data);
-
-    echo view('common/footer');
+    echo view('Common/Footer');
 
 }
 

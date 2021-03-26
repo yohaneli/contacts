@@ -155,7 +155,7 @@
 
             <?php foreach ($contacts as $contact) {?>
 
-            <tr id="contact-"<?php echo $contact->id ;?>>
+            <tr id="contact-<?php echo $contact->id ;?>" data-id="<?php echo $contact->id ;?>">
               <td class="center-align contact-checkbox">
                 <label class="checkbox-label">
                   <input type="checkbox" name="foo" />
@@ -176,6 +176,9 @@
           </tbody>
         </table>
       </div>
+      <button class="btnprevious">Previous</button>
+      <button class="btnnext">Next</button>
+
     </div>
   </div>
 </div>
@@ -197,12 +200,12 @@
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix"> perm_identity </i>
-            <input id="#first_name" name="first_name" type="text" class="validate">
+            <input id="#first_Name" name="first_Name" type="text" class="validate">
             <label for="first_name">Prénom</label>
           </div>
           <div class="input-field col s12">
             <i class="material-icons prefix"> perm_identity </i>
-            <input id="last_name" name="last_name" type="text" class="validate">
+            <input id="last_Name" name="last_Name" type="text" class="validate">
             <label for="last_name">Nom</label>
           </div>
           <div class="input-field col s12">
@@ -212,7 +215,7 @@
           </div>
           <div class="input-field col s12">
             <i class="material-icons prefix"> business_center </i>
-            <input id="business" name="business" type="text" class="validate">
+            <input id="job" name="job" type="text" class="validate">
             <label for="business">Profession</label>
           </div>
         </div>
@@ -229,7 +232,7 @@
           </div>
           <div class="input-field col s12">
             <i class="material-icons prefix"> note </i>
-            <input id="notes" name="notes" type="text" class="validate">
+            <input id="note" name="note" type="text" class="validate">
             <label for="notes">Notes</label>
           </div>
         </div>
@@ -238,7 +241,7 @@
         <button class="btn-small waves-effect waves-light add-contact">
           <span>Add Contact</span>
         </button>
-        <button class="btn-small waves-effect waves-light update-contact display-none">
+        <button class="btn-small waves-effect waves-light update-contact">
           <span>Update Contact</span>
         </button>
       </div>

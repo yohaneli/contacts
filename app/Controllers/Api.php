@@ -27,7 +27,6 @@ class Api extends BaseController
         //$listContacts = $this->contactsModel->findAll();
 		
         $listContacts = $this->contactsModel->orderBy('last_Name','ASC')
-                                            ->orderBy('first_Name','ASC')
                                             ->paginate(10);
 
             
@@ -48,6 +47,10 @@ class Api extends BaseController
                     $listContacts = $this->contactsModel->paginate(2);
 
                     break;
+
+                    default:
+
+                    $listContacts = $this->contactsModel->where($this->request->getVar('type'),$this->request->getVar('contenuRecherche'))->first();
 
                 }
 
@@ -111,51 +114,57 @@ class Api extends BaseController
             'phone'     => 'required'
         ];
         
-        if ($this->validate($rules)) {
-            
-            $id = $this->request->getVar('id');
-    
-            $contact = $this->contactsModel->where('id',$id)->first();
-                    
-                if (!empty($contact)) {
+        $id = $this->request->getVar('id');
 
-                    $last_Name = $this->request->getVar('last_Name');
+        $contact = $this->contactsModel->where('id',$id)->first();
+
+            if (!empty($contact)) {
+
+                $etatAction = ['response'=>$contact] ;
+
+            }
+
+                if ($this->validate($rules)) {
+            
+                    if (!empty($contact)) {
+
+                        $last_Name = $this->request->getVar('last_Name');
                     
-                    $phone = $this->request->getVar('phone');
+                        $phone = $this->request->getVar('phone');
                 
-                    $dataSave = [
+                        $dataSave = [
                         'last_Name'     => $last_Name,
                         'phone'    	    => $phone,
-                        'first_Name'    => $this->request->getVar('last_Name'),
+                        'first_Name'    => $this->request->getVar('first_Name'),
                         'email'         => $this->request->getVar('email')
 
-                    ];
+                        ];
 
-                    $this->contactsModel->where('id',$id)->set($dataSave)->update();
+                        $this->contactsModel->where('id',$id)->set($dataSave)->update();
 
-                    $etatAction = ['response'=>true] ;
+                        $etatAction = ['response'=>true] ;
                 
-                }  else {
+                    }  else {
 
                     $etatAction["ERROR"]["ID"] = "Le contact/L'ID n'existe pas";
 
-                }       
+                    }       
     
-            } else {
+                } else {
                 
-                if (empty($this->request->getVar('last_Name'))) {
+                    if (empty($this->request->getVar('last_Name'))) {
 
                     $etatAction["ERROR"]["Nom"] = "Le nom n'a pas été rempli";
 
-                }
+                    }
                 
-                    if (empty($this->request->getVar('phone'))) {
+                        if (empty($this->request->getVar('phone'))) {
 
                         $etatAction["ERROR"]["Téléphone"] = "Le téléphone n'a pas été rempli";
 
-                    }
+                        }
 
-            }
+                }
 
         return $this->response->setJSON($etatAction);
 
@@ -197,7 +206,11 @@ class Api extends BaseController
 
             $dataSave = [
                 'last_Name'     => $last_Name,
-                'phone'    	    => $phone
+                'phone'    	    => $phone,
+                'first_Name'    => $this->request->getVar('first_Name'),
+                'company'    	=> $this->request->getVar('company'),
+                'job'           => $this->request->getVar('job'),
+                'email'    	    => $this->request->getVar('email'),
             ];
 
             $this->contactsModel->save($dataSave);            

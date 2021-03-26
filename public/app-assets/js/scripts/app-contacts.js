@@ -11,7 +11,7 @@ $(document).ready(function () {
       scrollY: calcDataTableHeight(),
       scrollCollapse: true,
       scrollX: false,
-      paging: true,
+      paging: false,
       responsive: true,
       lengthMenu: [15],
       aoColumns: [
@@ -88,7 +88,7 @@ $(document).ready(function () {
        $(this).toggleClass("amber-text");
     });
 
-    $(".delete i").on("click", function (e) {
+    $(".app-page .delete i").on("click", function (e) {
       //var test = e.target.id.split("-"); 1ère technique pour atteindre l'id
       //console.log($(this).data('ref'));
       //alert($(this).data('nom')+' a été ajouté à vos favoris');
@@ -97,11 +97,11 @@ $(document).ready(function () {
 		};
        postToApi('delete',param);
        $("#contact- " + "delete").remove();
+       console.log( $("#contact-"+ $(this).data('ref'))) ;
  //supprimer l'element correspondant à l'id dans la DOM
       e.preventDefault();
    });
 
-   
    // Toggle class of sidenav
    $("#contact-sidenav").sidenav({
       onOpenStart: function () {
@@ -159,18 +159,18 @@ $(document).ready(function () {
       contactComposeSidebar.removeClass("show");
    });
 
-   $(".dataTables_scrollBody tr").on("click", function () {
+   $(document).on("click",".dataTables_scrollBody tr", function () {
       updatecontact.removeClass("display-none");
       addcontact.addClass("display-none");
       contactOverlay.addClass("show");
       contactComposeSidebar.addClass("show");
-      $("#first_name").val("Paul");
-      $("#last_name").val("Rees");
-      $("#company").val("Acme Corporation");
-      $("#business").val("Software Developer");
-      $("#email").val("paul.rees@domain.com");
-      $("#phone").val("+1-202-555-0112");
-      $("#notes").val("Do not disturb during work."); 0.2
+      $("#first_Name").val("");
+      $("#last_Name").val("");
+      $("#company").val("");
+      $("#job").val("");
+      $("#email").val("");
+      $("#phone").val("");
+      $("#note").val(""); 0.2
       labelEditForm.addClass("active");
    }).on("click", ".checkbox-label,.favorite,.delete", function (e) {
       e.stopPropagation();
